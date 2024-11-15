@@ -64,35 +64,39 @@ original:
     },
 ];
 
-const galleryContainer = document.querySelector('.gallery');
+const gallery = document.querySelector(".gallery");
 
 const galleryMarkup = images
   .map(
-      ({ preview, original, description }) => `
-    
+    ({ preview, original, description }) => `
       <li class="gallery-item">
-  <a class="gallery-link" href="${original}">
-    <img
-      class="gallery-image"
-      src="s${preview}"
-      data-source="${original}"
-      alt="${description}"
-    />
-  </a>
-</li>
-  `
+        <a class="gallery-link" href="${original}">
+          <img
+            class="gallery-image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+          />
+        </a>
+      </li>
+    `
   )
   .join("");
 
-galleryContainer.insertAdjacentHTML("beforeend", galleryMarkup);
+gallery.insertAdjacentHTML("beforeend", galleryMarkup);
 
-galleryContainer.addEventListener('click', event => {
+gallery.addEventListener("click", (event) => {
   event.preventDefault();
 
-    const isImage = event.target.classList.contains("gallery-image");
+
+  const isImage = event.target.classList.contains("gallery-image");
   if (!isImage) return;
 
   const largeImageURL = event.target.dataset.source;
-  console.log("Large image URL:", largeImageURL);
-  }
-);
+
+  const modalMarkup = `<img src="${largeImageURL}" alt="${event.target.alt}" />`;
+
+  const instance = basicLightbox.create(modalMarkup);
+
+  instance.show();
+});
